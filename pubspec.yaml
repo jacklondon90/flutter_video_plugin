@@ -40,7 +40,7 @@ flutter:
         package: com.example.flutter_video_plugin
         pluginClass: FlutterVideoPlugin
       ios:
-        pluginClass: FlutterVideoPlugin
+        pluginClass: SwiftFlutterVideoPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
