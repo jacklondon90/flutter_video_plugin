@@ -40,7 +40,6 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
     private var containerView: UIView
     private var isThumbSeek: Bool = false
     private var isObserverAdded = false
-    private var timeObserverToken: Any?
 
     init(frame: CGRect, viewId: Int64, args: Any?, messenger: FlutterBinaryMessenger) {
         self.frame = frame
@@ -145,9 +144,6 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
                 return
             }
             changeSubtitle(language: language)
-            result(nil)
-        case "disposePlayer":
-            dispose()
             result(nil)          
         default:
             result(FlutterMethodNotImplemented)
@@ -463,29 +459,12 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
         }
     }
 
-    public func dispose() {
-        if let playerItem = player?.currentItem, isObserverAdded {
-            removeObservers(from: playerItem)
-        }
-        if let observer = timeObserverToken {
-            player?.removeTimeObserver(observer)
-            timeObserverToken = nil
-        }
-        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
-        player?.pause()
-        player = nil
-        playerLayer?.removeFromSuperlayer()
-        playerLayer = nil
-        print("Player disposed")
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
         if isObserverAdded {
             player?.currentItem?.removeObserver(self, forKeyPath: "duration")
             player?.currentItem?.removeObserver(self, forKeyPath: "status")
         }
-        dispose()
     }
 
 }
