@@ -213,23 +213,24 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
         result(nil)
     }
 
-    private func changeVideoQuality(url: URL) {
+  private func changeVideoQuality(url: URL) {
         guard let player = player, let currentItem = player.currentItem else { return }
 
         let currentTime = player.currentTime()
         player.pause()
+        removeObservers(from: currentItem)
 
         isThumbSeek = true
-
-        if isObserverAdded {
-            currentItem.removeObserver(self, forKeyPath: "duration")
-            currentItem.removeObserver(self, forKeyPath: "status")
-            isObserverAdded = false
-        }
 
         let masterUrl = URL(string: "https://files.etibor.uz/media/the_beekeeper/master.m3u8")!
         let newItem = AVPlayerItem(url: masterUrl)
 
+        newItem.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
+        newItem.addObserver(self, forKeyPath: "status", options: [.new, .initial], context: nil)
+        newItem.addObserver(self, forKeyPath: "playbackBufferEmpty", options: [.new, .initial], context: nil)
+        newItem.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: [.new, .initial], context: nil)
+        newItem.addObserver(self, forKeyPath: "playbackBufferFull", options: [.new, .initial], context: nil)
+        newItem.addObserver(self, forKeyPath: "loadedTimeRanges", options: [.new, .initial], context: nil)
         newItem.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
         newItem.addObserver(self, forKeyPath: "status", options: [.new, .initial], context: nil)
         isObserverAdded = true
@@ -239,7 +240,6 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.selectAudioTrack(for: newItem)
             self.selectVideoQuality(for: newItem, qualityUrl: url)
-
             let timeScale = newItem.asset.duration.timescale
             let seekTime = CMTime(seconds: CMTimeGetSeconds(currentTime), preferredTimescale: timeScale)
             newItem.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
@@ -251,7 +251,18 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
             }
         }
     }
-
+    
+    private func removeObservers(from playerItem: AVPlayerItem) {
+        if isObserverAdded {
+            playerItem.removeObserver(self, forKeyPath: "playbackBufferEmpty", context: nil)
+            playerItem.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp", context: nil)
+            playerItem.removeObserver(self, forKeyPath: "playbackBufferFull", context: nil)
+            playerItem.removeObserver(self, forKeyPath: "loadedTimeRanges", context: nil)
+            playerItem.removeObserver(self, forKeyPath: "duration", context: nil)
+            playerItem.removeObserver(self, forKeyPath: "status", context: nil)
+            isObserverAdded = false
+        }
+    }
     private func selectAudioTrack(for playerItem: AVPlayerItem) {
         guard let mediaSelectionGroup = playerItem.asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else { return }
 
