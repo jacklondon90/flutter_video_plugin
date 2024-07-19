@@ -450,10 +450,14 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
                     _elapsedTime = FormatDuration().formatDuration(
                         Duration(seconds: (value * _videoDuration).toInt()));
                   });
+                  _sendIsSliderBeingDragged(
+                      true); // Notify that the slider is being dragged
                 },
                 onChangeEnd: (double value) {
                   _sendSeekValue(value);
                   print('Flutter slider: $value');
+                  _sendIsSliderBeingDragged(
+                      false); // Notify that the slider dragging ended
                 },
               ),
             ],
@@ -489,6 +493,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
       print("SUCCESS to send seek value: '$value'.");
     } on PlatformException catch (e) {
       print("Failed to send seek value: '${e.message}'.");
+    }
+  }
+
+  Future<void> _sendIsSliderBeingDragged(bool isDragging) async {
+    if (platform == null) return;
+
+    try {
+      await platform!
+          .invokeMethod('isSliderBeingDragged', {'isDragging': isDragging});
+    } on PlatformException catch (e) {
+      print("Failed to send slider dragging state: '${e.message}'.");
     }
   }
 

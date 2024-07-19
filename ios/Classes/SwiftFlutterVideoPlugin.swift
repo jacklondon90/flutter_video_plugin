@@ -41,6 +41,7 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
     private var isThumbSeek: Bool = false
     private var isObserverAdded = false
     private var timeObserverToken: Any?
+    private var isSliderBeingDragged = false
 
     init(frame: CGRect, viewId: Int64, args: Any?, messenger: FlutterBinaryMessenger) {
         self.frame = frame
@@ -148,7 +149,12 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
             result(nil)     
         case "disposePlayer":
             dispose()
-            result(nil)     
+            result(nil)
+        case "isSliderBeingDragged":
+            if let args = call.arguments as? [String: Any], let isDragging = args["isDragging"] as? Bool {
+                isSliderBeingDragged = isDragging
+            }
+            result(nil)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -216,9 +222,23 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
         changeVideoQuality(url: videoUrl)
         result(nil)
     }
+    private func getSelectedAudioTrack() -> AVMediaSelectionOption? {
+        guard let playerItem = player?.currentItem else { return nil }
+        let mediaSelectionGroup = playerItem.asset.mediaSelectionGroup(forMediaCharacteristic: .audible)
+        return playerItem.selectedMediaOption(in: mediaSelectionGroup!)
+    }
+    private func getSelectedSubtitleTrack() -> AVMediaSelectionOption? {
+        guard let playerItem = player?.currentItem else { return nil }
+        let mediaSelectionGroup = playerItem.asset.mediaSelectionGroup(forMediaCharacteristic: .legible)
+        return playerItem.selectedMediaOption(in: mediaSelectionGroup!)
+    }
 
-  private func changeVideoQuality(url: URL) {
+
+    private func changeVideoQuality(url: URL) {
         guard let player = player, let currentItem = player.currentItem else { return }
+
+        let selectedAudioTrack = getSelectedAudioTrack()
+        let selectedSubtitleTrack = getSelectedSubtitleTrack()
 
         let currentTime = player.currentTime()
         player.pause()
@@ -240,19 +260,36 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
         isObserverAdded = true
 
         player.replaceCurrentItem(with: newItem)
-
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.selectAudioTrack(for: newItem)
-            self.selectVideoQuality(for: newItem, qualityUrl: url)
-            let timeScale = newItem.asset.duration.timescale
-            let seekTime = CMTime(seconds: CMTimeGetSeconds(currentTime), preferredTimescale: timeScale)
-            newItem.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
-                self?.isThumbSeek = false
-                self?.player?.play()
-                if let playerItem = self?.player?.currentItem {
-                    self?.setInitialAudioLanguage(playerItem: playerItem)
-                }
-            }
+             let timeScale = newItem.asset.duration.timescale
+             let seekTime = CMTime(seconds: CMTimeGetSeconds(currentTime), preferredTimescale: timeScale)
+             newItem.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
+                 self?.isThumbSeek = false
+                 self?.player?.play()
+                 self?.reapplyAudioTrack(selectedAudioTrack, to: newItem)
+                 self?.reapplySubtitleTrack(selectedSubtitleTrack, to: newItem)
+
+             }
+         }
+    }
+    
+    private func reapplyAudioTrack(_ selectedAudioTrack: AVMediaSelectionOption?, to playerItem: AVPlayerItem) {
+        guard let mediaSelectionGroup = playerItem.asset.mediaSelectionGroup(forMediaCharacteristic: .audible) else { return }
+
+        if let selectedAudioTrack = selectedAudioTrack {
+            playerItem.select(selectedAudioTrack, in: mediaSelectionGroup)
+        } else if let defaultOption = mediaSelectionGroup.defaultOption {
+            playerItem.select(defaultOption, in: mediaSelectionGroup)
+        }
+    }
+    
+    private func reapplySubtitleTrack(_ selectedSubtitleTrack: AVMediaSelectionOption?, to playerItem: AVPlayerItem) {
+        guard let mediaSelectionGroup = playerItem.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else { return }
+
+        if let selectedSubtitleTrack = selectedSubtitleTrack {
+            playerItem.select(selectedSubtitleTrack, in: mediaSelectionGroup)
+        } else {
+            playerItem.select(nil, in: mediaSelectionGroup)
         }
     }
     
@@ -339,6 +376,7 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
             player?.seek(to: seekTime) { [weak self] completed in
                 if completed {
                     self?.isThumbSeek = false
+                    self?.isSliderBeingDragged = false
                 }
             }
         }
@@ -445,7 +483,7 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
     private func addPeriodicTimeObserver() {
         let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
-            guard let self = self, !self.isThumbSeek, let duration = self.player?.currentItem?.duration else { return }
+            guard let self = self, !self.isThumbSeek,!self.isSliderBeingDragged, let duration = self.player?.currentItem?.duration else { return }
             let currentTime = CMTimeGetSeconds(time)
             let durationTime = CMTimeGetSeconds(duration)
             let value = Float(currentTime / durationTime)
