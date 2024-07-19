@@ -40,6 +40,7 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
     private var containerView: UIView
     private var isThumbSeek: Bool = false
     private var isObserverAdded = false
+    private var timeObserverToken: Any?
 
     init(frame: CGRect, viewId: Int64, args: Any?, messenger: FlutterBinaryMessenger) {
         self.frame = frame
