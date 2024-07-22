@@ -1,4 +1,4 @@
-package com.example.flutter_video_plugin
+package uz.frame.player
 
 import androidx.annotation.NonNull
 
