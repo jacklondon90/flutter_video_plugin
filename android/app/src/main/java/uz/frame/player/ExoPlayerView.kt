@@ -1,19 +1,11 @@
 package uz.frame.player
 
 import android.content.Context
+import android.media.browse.MediaBrowser
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
-import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
-import androidx.media3.ui.PlayerView
-import io.flutter.plugin.common.BinaryMessenger
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.platform.PlatformView
 
 class ExoPlayerView(context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
 
@@ -35,7 +27,7 @@ class ExoPlayerView(context: Context, viewId: Int, messenger: BinaryMessenger) :
         val playerView: PlayerView = playerContainer.findViewById(R.id.player_view)
         playerView.player = player
 
-        val mediaItem = MediaItem.Builder()
+        val mediaItem = MediaBrowser.MediaItem.Builder()
             .setUri("https://files.etibor.uz/media/the_beekeeper/master.m3u8")
             .build()
         player.setMediaItem(mediaItem)
