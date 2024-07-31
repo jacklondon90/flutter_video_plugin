@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-class SwiftFlutterVideoPlugin {
+class FlutterVideoPlugin {
   static const MethodChannel _channel = MethodChannel('flutter_video_plugin');
 
   Future<void> changeAudio(String language) async {
