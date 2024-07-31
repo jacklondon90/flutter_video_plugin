@@ -20,7 +20,7 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    FlutterVideoPlugin flutterVideoPlugin = FlutterVideoPlugin();
+    SwiftFlutterVideoPlugin flutterVideoPlugin = SwiftFlutterVideoPlugin();
     MockFlutterVideoPluginPlatform fakePlatform =
         MockFlutterVideoPluginPlatform();
     FlutterVideoPluginPlatform.instance = fakePlatform;
