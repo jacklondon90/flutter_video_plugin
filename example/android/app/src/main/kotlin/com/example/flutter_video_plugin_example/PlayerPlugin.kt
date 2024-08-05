@@ -22,7 +22,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
 @UnstableApi
-class PlayerView (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
+class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
 
     private val playerContainer: FrameLayout = LayoutInflater.from(context).inflate(R.layout.exoplayer_view, null) as FrameLayout
     private val player: ExoPlayer

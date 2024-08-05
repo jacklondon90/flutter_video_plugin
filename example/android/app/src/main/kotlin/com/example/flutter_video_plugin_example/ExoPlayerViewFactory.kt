@@ -9,6 +9,6 @@ import io.flutter.plugin.common.StandardMessageCodec
 
 class ExoPlayerViewFactory(private val messenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        return PlayerView(context, viewId, messenger)
+        return PlayerPlugin(context, viewId, messenger)
     }
 }
