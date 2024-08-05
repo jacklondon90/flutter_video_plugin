@@ -1,4 +1,4 @@
-package com.example.avplayer_flutter
+package uz.frame.player
 
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
