@@ -11,6 +11,6 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         val registry: PlatformViewRegistry = flutterEngine.platformViewsController.registry
         val messenger: BinaryMessenger = flutterEngine.dartExecutor.binaryMessenger
-        registry.registerViewFactory("PlayerView", PlayerViewFactory(messenger))
+        registry.registerViewFactory("PlayerPlugin", PlayerViewFactory(messenger))
     }
 }
