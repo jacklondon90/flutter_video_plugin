@@ -8,6 +8,6 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        flutterEngine.platformViewsController.registry.registerViewFactory("exoplayer_view", ExoPlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger))
+        flutterEngine.platformViewsController.registry.registerViewFactory("PlayerPlugin", ExoPlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger))
     }
 }
