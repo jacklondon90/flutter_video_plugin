@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -14,15 +15,13 @@ import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
 import com.example.flutter_video_plugin_example.R
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
-
-@UnstableApi
-class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
+@OptIn(UnstableApi::class)
+class PlayerPlugin(context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
 
     private val playerContainer: FrameLayout = LayoutInflater.from(context).inflate(R.layout.exoplayer_view, null) as FrameLayout
     private val player: ExoPlayer
@@ -32,6 +31,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
     private var selectedAudioLanguage: String? = null
     private var selectedSubtitleLanguage: String? = null
     private var isSliderBeingDragged = false
+
     init {
         val loadControl = DefaultLoadControl.Builder()
             .setBufferDurationsMs(
@@ -47,7 +47,6 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         val playerView: PlayerView = playerContainer.findViewById(R.id.player_view)
         playerView.player = player
 
-
         val mediaItem = MediaItem.Builder()
             .setUri("https://files.etibor.uz/media/the_beekeeper/master.m3u8")
             .build()
@@ -60,9 +59,8 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_READY) {
                     val duration = player.duration
-                    methodChannel.invokeMethod("updateDuration", duration / 1000.0) // Send duration in seconds
+                    methodChannel.invokeMethod("updateDuration", duration / 1000.0)
                     updateAudioAndSubtitleOptions()
-
                 }
                 when (state) {
                     Player.STATE_BUFFERING -> {
@@ -107,10 +105,10 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
                     player.pause()
                     result.success(true)
                 }
-                "10+" ->{
+                "10+" -> {
                     seekBy(10)
                 }
-                "10-" ->{
+                "10-" -> {
                     seekBy(-10)
                 }
                 "changeAudio" -> {
@@ -159,9 +157,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
                     }
                 }
                 else -> result.notImplemented()
-
             }
-
         }
         startPeriodicUpdates()
     }
@@ -170,8 +166,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         handler.postDelayed(object : Runnable {
             override fun run() {
                 if (!isSliderBeingDragged) {
-                    val currentPosition =
-                        player.currentPosition.toFloat() / player.duration.toFloat()
+                    val currentPosition = player.currentPosition.toFloat() / player.duration.toFloat()
                     val bufferedPercentage = player.bufferedPercentage
                     methodChannel.invokeMethod("updateBuffer", bufferedPercentage.toDouble())
                     methodChannel.invokeMethod("updateSlider", currentPosition)
@@ -186,15 +181,14 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         val newPosition = currentPosition + seconds * 1000
         player.seekTo(newPosition.coerceIn(0, player.duration))
     }
-    private fun changeAudio(language: String) {
 
+    private fun changeAudio(language: String) {
         val tracks = player.currentTracks ?: return
         var trackFound = false
         for (trackGroup in tracks.groups) {
             for (i in 0 until trackGroup.mediaTrackGroup.length) {
                 val format = trackGroup.mediaTrackGroup.getFormat(i)
                 if (format.language != null && format.language == language && format.sampleMimeType?.startsWith("audio") == true) {
-                    Log.d("ExoPlayerView", "Found audio track: $language")
                     player.trackSelectionParameters = player.trackSelectionParameters.buildUpon()
                         .setPreferredAudioLanguage(language)
                         .build()
@@ -208,7 +202,6 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
             Log.e("ExoPlayerView", "Audio track not found: $language")
         }
     }
-
 
     private fun changeSubtitle(language: String) {
         val tracks = player.currentTracks ?: return
@@ -236,10 +229,8 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
                 if (format.language != null) {
                     if (format.sampleMimeType?.startsWith("audio") == true) {
                         audioOptions.add(format.language ?: "Unknown")
-                        Log.d("ExoPlayerView", "Audio language: ${format.language}")
                     } else if (format.sampleMimeType?.startsWith("text") == true) {
                         subtitleOptions.add(format.language ?: "Unknown")
-                        Log.d("ExoPlayerView", "Subtitle language: ${format.language}")
                     }
                 }
             }
@@ -274,10 +265,9 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
             for (i in 0 until group.length) {
                 val format = group.getTrackFormat(i)
                 if (group.isTrackSelected(i)) {
-                    if (format.sampleMimeType?.startsWith("audio") == true) {
-                        selectedAudioLanguage = format.language
-                    } else if (format.sampleMimeType?.startsWith("text") == true) {
-                        selectedSubtitleLanguage = format.language
+                    when {
+                        format.sampleMimeType?.startsWith("audio") == true -> selectedAudioLanguage = format.language
+                        format.sampleMimeType?.startsWith("text") == true -> selectedSubtitleLanguage = format.language
                     }
                 }
             }
@@ -285,17 +275,17 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
     }
 
     private fun reapplySelections() {
-        val trackSelector = player.trackSelector as? DefaultTrackSelector ?: return
-        val parametersBuilder = trackSelector.buildUponParameters()
-        selectedAudioLanguage?.let {
-            parametersBuilder.setPreferredAudioLanguage(it)
-        }
-        selectedSubtitleLanguage?.let {
-            parametersBuilder.setPreferredTextLanguage(it)
-        }
-
-        trackSelector.setParameters(parametersBuilder)
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(state: Int) {
+                if (state == Player.STATE_READY) {
+                    selectedAudioLanguage?.let { changeAudio(it) }
+                    selectedSubtitleLanguage?.let { changeSubtitle(it) }
+                    player.removeListener(this)
+                }
+            }
+        })
     }
+
     private fun setPlaybackSpeed(speed: Float) {
         player.setPlaybackSpeed(speed)
     }
