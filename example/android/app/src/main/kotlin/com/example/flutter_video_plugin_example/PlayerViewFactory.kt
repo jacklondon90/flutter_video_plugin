@@ -7,10 +7,10 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
+import uz.frame.player.PlayerPlugin
 
 class PlayerViewFactory(private val messenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     @OptIn(UnstableApi::class) override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
-        // Ensure you are creating and returning the PlayerPlugin instance correctly
         return PlayerPlugin(context!!, viewId, messenger)
     }
 }
