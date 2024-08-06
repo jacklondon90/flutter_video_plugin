@@ -44,7 +44,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         player = ExoPlayer.Builder(context)
             .setLoadControl(loadControl)
             .build()
-        val playerView: PlayerView = playerContainer.findViewById(R.id.player_view)
+        val playerView: PlayerView = playerContainer.findViewById(R.id.exoplayer_view)
         playerView.player = player
 
 
