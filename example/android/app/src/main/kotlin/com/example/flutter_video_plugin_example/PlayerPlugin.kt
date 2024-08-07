@@ -163,6 +163,8 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
 
         }
         startPeriodicUpdates()
+        println("PlayerPlugin initialized with viewId: $viewId")
+
     }
 
     private fun startPeriodicUpdates() {
