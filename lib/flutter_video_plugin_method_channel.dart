@@ -7,7 +7,7 @@ import 'flutter_video_plugin_platform_interface.dart';
 class MethodChannelFlutterVideoPlugin extends FlutterVideoPluginPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('exoplayer_view');
+  final methodChannel = const MethodChannel('PlayerPlugin');
 
   @override
   Future<String?> getPlatformVersion() async {

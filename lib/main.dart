@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
-            icon: Icon(Icons.screen_rotation),
+            icon: Icon(Icons.abc),
             onPressed: () {
               // Toggle orientation
             },
