@@ -17,7 +17,7 @@ class PlayerPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "PlayerPlugin")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "exoplayer_view")
     channel.setMethodCallHandler(this)
   }
 
