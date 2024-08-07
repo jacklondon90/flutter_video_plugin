@@ -1,4 +1,3 @@
-package uz.frame.player
 
 import android.content.Context
 import android.os.Handler
