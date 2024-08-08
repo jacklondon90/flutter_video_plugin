@@ -1,5 +1,4 @@
-package uz.frame.player
-import PlayerPlugin
+package com.example.flutter_video_plugin_example
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
