@@ -471,6 +471,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
   void _onPlatformViewCreated(int id) {
     platform = MethodChannel('fluff_view_channel_$id');
     platform?.setMethodCallHandler(_handleMethodCall);
+    debugPrint("Flutter Debugging:::");
+    debugPrint(platform!.name);
+    debugPrint(platform.toString());
   }
 
   Future<void> _sendData(String type) async {
