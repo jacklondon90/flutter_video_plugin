@@ -1,6 +1,5 @@
 package uz.frame.player
 
-import android.content.Context
 import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -13,7 +12,7 @@ class PlayerPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-       println("onAttachedToEngine called in Main Project")
+        Log.d("PlayerPlugin", "onAttachedToEngine called in Main Project")
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_video_plugin")
         channel.setMethodCallHandler(this)
     }

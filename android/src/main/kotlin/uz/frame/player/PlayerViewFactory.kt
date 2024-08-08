@@ -11,7 +11,7 @@ import io.flutter.plugin.platform.PlatformViewFactory
 class PlayerViewFactory(private val messenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     @OptIn(UnstableApi::class)
     override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
-        println("Creating PlayerPlugin with viewId: $viewId in Main Project")
+        Log.d("PlayerViewFactory", "Creating PlayerPlugin with viewId: $viewId in Main Project")
         return PlayerPlugin(context!!, viewId, messenger)
     }
 }
