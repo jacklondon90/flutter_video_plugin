@@ -37,7 +37,7 @@ flutter:
     platforms:
       android:
         package: uz.frame.player
-        pluginClass: PlayerPlugin
+        pluginClass: FlutterVideoPlugin
       ios:
         pluginClass: SwiftFlutterVideoPlugin
 
