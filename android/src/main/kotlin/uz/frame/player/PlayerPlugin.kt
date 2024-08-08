@@ -12,7 +12,7 @@ class PlayerPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_video_plugin")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "PlayerPlugin")
         channel.setMethodCallHandler(this)
     }
 
