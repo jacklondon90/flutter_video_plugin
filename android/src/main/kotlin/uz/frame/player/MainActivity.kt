@@ -1,16 +1,14 @@
-package com.example.flutter_video_plugin_example
+package uz.frame.player
 
-import PlayerViewFactory
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 
 class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        println("Registering PlayerViewFactory")
-        flutterEngine.platformViewsController.registry.registerViewFactory(
-            "PlayerPlugin",
-            PlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
-        )
+        flutterEngine
+            .platformViewsController
+            .registry
+            .registerViewFactory("PlayerPlugin", ExoPlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger))
     }
 }
