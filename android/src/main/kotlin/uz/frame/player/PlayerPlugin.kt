@@ -13,7 +13,7 @@ class PlayerPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        Log.d("PlayerPlugin", "onAttachedToEngine called in Main Project")
+       println("onAttachedToEngine called in Main Project")
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_video_plugin")
         channel.setMethodCallHandler(this)
     }
