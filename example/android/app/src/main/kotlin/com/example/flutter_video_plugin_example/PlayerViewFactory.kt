@@ -1,4 +1,5 @@
-
+package uz.frame.player
+import PlayerPlugin
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
