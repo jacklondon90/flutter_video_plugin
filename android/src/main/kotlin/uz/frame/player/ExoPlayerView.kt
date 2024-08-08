@@ -1,3 +1,4 @@
+ package uz.frame.player
 
 import android.content.Context
 import android.os.Handler
@@ -6,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -15,13 +17,11 @@ import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
-import com.example.flutter_video_plugin_example.R
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
-
-@UnstableApi
-class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
+ @OptIn(UnstableApi::class)
+class ExoPlayerView (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
 
     private val playerContainer: FrameLayout = LayoutInflater.from(context).inflate(R.layout.exoplayer_view, null) as FrameLayout
     private val player: ExoPlayer
@@ -187,7 +187,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         val newPosition = currentPosition + seconds * 1000
         player.seekTo(newPosition.coerceIn(0, player.duration))
     }
-    private fun changeAudio(language: String) {
+    @OptIn(UnstableApi::class) private fun changeAudio(language: String) {
 
         val tracks = player.currentTracks ?: return
         var trackFound = false
@@ -211,7 +211,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
     }
 
 
-    private fun changeSubtitle(language: String) {
+    @OptIn(UnstableApi::class) private fun changeSubtitle(language: String) {
         val tracks = player.currentTracks ?: return
         for (trackGroup in tracks.groups) {
             for (i in 0 until trackGroup.mediaTrackGroup.length) {
@@ -285,7 +285,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         }
     }
 
-    private fun reapplySelections() {
+    @OptIn(UnstableApi::class) private fun reapplySelections() {
         val trackSelector = player.trackSelector as? DefaultTrackSelector ?: return
         val parametersBuilder = trackSelector.buildUponParameters()
         selectedAudioLanguage?.let {
