@@ -32,9 +32,8 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
     private var selectedSubtitleLanguage: String? = null
     private var isSliderBeingDragged = false
     init {
-        Log.d("PlayerPlugin", "Initializing PlayerPlugin with viewId: $viewId")
-        Log.d("PlayerPlugin", "Context: $context, viewId: $viewId")
-        val loadControl = DefaultLoadControl.Builder()
+        println( "Initializing PlayerPlugin with viewId: $viewId")
+         val loadControl = DefaultLoadControl.Builder()
             .setBufferDurationsMs(
                 DefaultLoadControl.DEFAULT_MIN_BUFFER_MS,
                 DefaultLoadControl.DEFAULT_MAX_BUFFER_MS,
