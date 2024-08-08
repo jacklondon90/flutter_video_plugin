@@ -1,4 +1,4 @@
-package com.example.flutter_video_plugin_example
+/*package com.example.flutter_video_plugin_example
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
@@ -13,4 +13,4 @@ class PlayerViewFactory(private val messenger: BinaryMessenger) : PlatformViewFa
         println( "Creating PlayerPlugin with viewId:$viewId")
         return PlayerPlugin(context!!, viewId, messenger)
     }
-}
+}*/
