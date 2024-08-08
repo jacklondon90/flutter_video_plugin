@@ -48,7 +48,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
 
 
         val mediaItem = MediaItem.Builder()
-            .setUri("https://files.etibor.uz/media/the_beekeeper/master.m3u8")
+            .setUri("https://files.etibor.uz/media/backup_beekeeper/master.m3u8")
             .build()
         player.setMediaItem(mediaItem)
         player.prepare()
@@ -254,10 +254,10 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         storeCurrentSelections()
         val currentPosition = player.currentPosition
         val newMediaItem = MediaItem.Builder()
-            .setUri("https://files.etibor.uz/media/the_beekeeper/" + url)
+            .setUri("https://files.etibor.uz/media/backup_beekeeper/" + url)
             .build()
         val initialMediaItem = MediaItem.Builder()
-            .setUri("https://files.etibor.uz/media/the_beekeeper/master.m3u8") // The original URL
+            .setUri("https://files.etibor.uz/media/backup_beekeeper/master.m3u8") // The original URL
             .build()
         player.setMediaItem(initialMediaItem)
         player.addMediaItem(newMediaItem)

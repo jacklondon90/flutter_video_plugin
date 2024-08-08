@@ -346,7 +346,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
                   child: ElevatedButton(
                     onPressed: () {
                       _showVideoQualityOptions(
-                          'https://files.etibor.uz/media/the_beekeeper/master.m3u8');
+                          'https://files.etibor.uz/media/backup_beekeeper/master.m3u8');
                     },
                     child: const Text('Quality'),
                   ),

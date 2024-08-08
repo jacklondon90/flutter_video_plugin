@@ -87,7 +87,7 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
     }
 
     private func setupPlayer() {
-        guard let videoUrl = URL(string: "https://files.etibor.uz/media/the_beekeeper/master.m3u8") else {
+        guard let videoUrl = URL(string: "https://files.etibor.uz/media/backup_beekeeper/master.m3u8") else {
             print("Failed to create URL for video")
             return
         }
@@ -246,7 +246,7 @@ public class SwiftPlayer: NSObject, FlutterPlatformView {
 
         isThumbSeek = true
 
-        let masterUrl = URL(string: "https://files.etibor.uz/media/the_beekeeper/master.m3u8")!
+        let masterUrl = URL(string: "https://files.etibor.uz/media/backup_beekeeper/master.m3u8")!
         let newItem = AVPlayerItem(url: masterUrl)
 
         newItem.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
