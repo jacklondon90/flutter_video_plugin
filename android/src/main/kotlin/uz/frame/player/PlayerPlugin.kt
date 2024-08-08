@@ -1,6 +1,7 @@
 package uz.frame.player
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -12,11 +13,13 @@ class PlayerPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "PlayerPlugin")
+        Log.d("PlayerPlugin", "onAttachedToEngine called in Main Project")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_video_plugin")
         channel.setMethodCallHandler(this)
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        Log.d("PlayerPlugin", "Method call received: ${call.method} in Main Project")
         if (call.method == "getPlatformVersion") {
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
         } else {
@@ -25,6 +28,7 @@ class PlayerPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d("PlayerPlugin", "onDetachedFromEngine called in Main Project")
         channel.setMethodCallHandler(null)
     }
 }
