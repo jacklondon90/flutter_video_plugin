@@ -1,13 +1,14 @@
 package uz.frame.player
 
+import com.example.flutter_video_plugin_example.ExoPlayerViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 
 class ExoPlayerViewPlugin: FlutterPlugin {
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        //binding
-            //.platformViewRegistry
-          //  .registerViewFactory("exoplayer_view", ExoPlayerViewFactory(binding.binaryMessenger))
+        binding
+            .platformViewRegistry
+            .registerViewFactory("exoplayer_view", ExoPlayerViewFactory(binding.binaryMessenger))
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
