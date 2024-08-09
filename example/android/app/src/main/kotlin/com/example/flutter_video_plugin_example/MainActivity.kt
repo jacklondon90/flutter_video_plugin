@@ -9,17 +9,17 @@ class MainActivity : FlutterActivity() {
         flutterEngine
             .platformViewsController
             .registry
-            .registerViewFactory("uz.frame.player.PlayerPlugin", MyAndroidViewFactory())
+            .registerViewFactory("uz.frame.player.PlayerPlugin", PlayerPlugin())
     }
 }
 
-class MyAndroidViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+class PlayerPlugin : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         return MyAndroidView(context)
     }
 }
 
-class MyAndroidView(context: Context) : PlatformView {
+class PlayerPlugin(context: Context) : PlatformView {
     private val textView: TextView = TextView(context)
 
     init {
