@@ -8,7 +8,7 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         println("Registering PlayerViewFactory")
         flutterEngine.platformViewsController.registry.registerViewFactory(
-            "uz.frame.player",
+            "PlayerPlugin",
             PlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
         )
     }

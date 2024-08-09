@@ -326,7 +326,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
                       onPlatformViewCreated: _onPlatformViewCreated,
                     )
                   : AndroidView(
-                      viewType: 'uz.frame.player',
+                      viewType: 'PlayerPlugin',
                       onPlatformViewCreated: _onPlatformViewCreated,
                     ),
             ),
