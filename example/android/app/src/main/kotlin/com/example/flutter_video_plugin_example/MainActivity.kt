@@ -8,7 +8,7 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         println("Registering PlayerViewFactory")
         flutterEngine.platformViewsController.registry.registerViewFactory(
-            "uz.frame.player",
+            "uz.frame.player",  // This should match the ID used in Dart
             PlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
         )
     }
