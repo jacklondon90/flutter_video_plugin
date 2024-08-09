@@ -1,5 +1,4 @@
-package uz.frame.player
-
+/*package uz.frame.player
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec
@@ -14,3 +13,4 @@ class PlayerViewFactory(
         return PlayerPlugin(context!!, viewId, messenger)
     }
 }
+*/

@@ -469,8 +469,13 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget>
   }
 
   void _onPlatformViewCreated(int id) {
-    platform = MethodChannel('fluff_view_channel_$id');
-    platform?.setMethodCallHandler(_handleMethodCall);
+    if (Platform.isAndroid) {
+      platform = MethodChannel('uz.frame.player');
+      platform?.setMethodCallHandler(_handleMethodCall);
+    } else {
+      platform = MethodChannel('fluff_view_channel_$id');
+      platform?.setMethodCallHandler(_handleMethodCall);
+    }
     debugPrint("Flutter Debugging:::");
     debugPrint(platform!.name);
     debugPrint(platform.toString());
