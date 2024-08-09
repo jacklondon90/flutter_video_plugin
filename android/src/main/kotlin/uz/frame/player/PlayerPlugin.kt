@@ -1,12 +1,10 @@
-package uz.frame.player
-
-import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import uz.frame.player.PlayerViewFactory
 
 /** SwiftKotlinPlayerPlugin */
 class PlayerPlugin: FlutterPlugin, MethodCallHandler {
@@ -18,9 +16,8 @@ class PlayerPlugin: FlutterPlugin, MethodCallHandler {
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "uz.frame.player")
-        print("DEBUG");
-        print(channel);
         channel.setMethodCallHandler(this)
+        flutterPluginBinding.platformViewRegistry.registerViewFactory("uz.frame.player", PlayerViewFactory())
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
