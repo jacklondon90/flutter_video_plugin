@@ -8,11 +8,11 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-class YourPluginNamePlugin : FlutterPlugin {
+class PlayerPlugin : FlutterPlugin {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         flutterPluginBinding
             .platformViewRegistry
-            .registerViewFactory("com.example.myandroidview", MyAndroidViewFactory(flutterPluginBinding.binaryMessenger))
+            .registerViewFactory("PlayerPlugin", MyAndroidViewFactory(flutterPluginBinding.binaryMessenger))
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
