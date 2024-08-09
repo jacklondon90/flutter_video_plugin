@@ -9,7 +9,7 @@ class MainActivity : FlutterActivity() {
         println("Registering PlayerViewFactory")
         flutterEngine.platformViewsController.registry.registerViewFactory(
             "PlayerPlugin",
-            PlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
+            ExoPlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
         )
     }
 }

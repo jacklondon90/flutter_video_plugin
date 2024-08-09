@@ -15,13 +15,12 @@ import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
-import com.example.flutter_video_plugin_example.R
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
 @UnstableApi
-class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
+class ExoPlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) : PlatformView {
 
     private val playerContainer: FrameLayout = LayoutInflater.from(context).inflate(R.layout.exoplayer_view, null) as FrameLayout
     private val player: ExoPlayer
