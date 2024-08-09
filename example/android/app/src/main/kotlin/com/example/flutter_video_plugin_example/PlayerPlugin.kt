@@ -53,7 +53,7 @@ class PlayerPlugin (context: Context, viewId: Int, messenger: BinaryMessenger) :
         player.setMediaItem(mediaItem)
         player.prepare()
         player.play()
-        methodChannel = MethodChannel(messenger, "fluff_view_channel_$viewId")
+        methodChannel = MethodChannel(messenger, "uz.frame.player")
 
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
