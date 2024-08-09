@@ -6,10 +6,29 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        println("Registering PlayerViewFactory")
-        flutterEngine.platformViewsController.registry.registerViewFactory(
-            "PlayerPlugin",
-            PlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
-        )
+        flutterEngine
+            .platformViewsController
+            .registry
+            .registerViewFactory("PlayerPlugin", MyAndroidViewFactory())
     }
+}
+
+class MyAndroidViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+    override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
+        return MyAndroidView(context)
+    }
+}
+
+class MyAndroidView(context: Context) : PlatformView {
+    private val textView: TextView = TextView(context)
+
+    init {
+        textView.text = "Hello from Android"
+     }
+
+    override fun getView(): View {
+        return textView
+    }
+
+    override fun dispose() {}
 }
