@@ -1,4 +1,4 @@
-package com.example.flutter_video_plugin_example
+package uz.frame.player
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,6 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
-import io.flutter.plugin.common.BinaryMessenger
-import io.flutter.plugin.platform.PlatformView
 
 class PlayerPlugin(
     context: Context, 
