@@ -12,7 +12,7 @@ class PlayerPlugin : FlutterPlugin {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         flutterPluginBinding
             .platformViewRegistry
-            .registerViewFactory("PlayerPlugin", MyAndroidViewFactory(flutterPluginBinding.binaryMessenger))
+            .registerViewFactory("uz.frame.player", MyAndroidViewFactory(flutterPluginBinding.binaryMessenger))
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
