@@ -17,7 +17,7 @@ class PlayerPlugin: FlutterPlugin, MethodCallHandler {
     private lateinit var channel : MethodChannel
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "SwiftKotlinPlayerPlugin")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "uz.frame.player")
         print("DEBUG");
         print(channel);
         channel.setMethodCallHandler(this)
