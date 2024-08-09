@@ -8,26 +8,33 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-class PlayerPlugin : FlutterPlugin, MethodCallHandler {
-    private lateinit var channel: MethodChannel
-
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        Log.d("PlayerPlugin", "onAttachedToEngine called in Main Project")
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_video_plugin")
-        channel.setMethodCallHandler(this)
+class YourPluginNamePlugin : FlutterPlugin {
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        flutterPluginBinding
+            .platformViewRegistry
+            .registerViewFactory("com.example.myandroidview", MyAndroidViewFactory(flutterPluginBinding.binaryMessenger))
     }
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        Log.d("PlayerPlugin", "Method call received: ${call.method} in Main Project")
-        if (call.method == "getPlatformVersion") {
-            result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } else {
-            result.notImplemented()
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
+
+    private class MyAndroidViewFactory(private val messenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+        override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
+            return MyAndroidView(context)
         }
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        Log.d("PlayerPlugin", "onDetachedFromEngine called in Main Project")
-        channel.setMethodCallHandler(null)
+    private class MyAndroidView(context: Context) : PlatformView {
+        private val textView: TextView = TextView(context)
+
+        init {
+            textView.text = "Hello from Android"
+            // Additional setup for your Android view can go here
+        }
+
+        override fun getView(): View {
+            return textView
+        }
+
+        override fun dispose() {}
     }
 }
