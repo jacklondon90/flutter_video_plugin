@@ -1,4 +1,4 @@
-package uz.frame.player
+package com.example.flutter_video_plugin_example
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -6,29 +6,10 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        flutterEngine
-            .platformViewsController
-            .registry
-            .registerViewFactory("uz.frame.player.PlayerPlugin", PlayerPlugin())
+        println("Registering PlayerViewFactory")
+        flutterEngine.platformViewsController.registry.registerViewFactory(
+            "uz.frame.player",
+            PlayerViewFactory(flutterEngine.dartExecutor.binaryMessenger)
+        )
     }
-}
-
-class PlayerPlugin : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
-    override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        return MyAndroidView(context)
-    }
-}
-
-class PlayerPlugin(context: Context) : PlatformView {
-    private val textView: TextView = TextView(context)
-
-    init {
-        textView.text = "Hello from Android"
-     }
-
-    override fun getView(): View {
-        return textView
-    }
-
-    override fun dispose() {}
 }
