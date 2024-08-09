@@ -1,4 +1,4 @@
-package com.example.flutter_video_plugin_example
+package uz.frame.player
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -9,7 +9,7 @@ class MainActivity : FlutterActivity() {
         flutterEngine
             .platformViewsController
             .registry
-            .registerViewFactory("PlayerPlugin", MyAndroidViewFactory())
+            .registerViewFactory("uz.frame.player.PlayerPlugin", MyAndroidViewFactory())
     }
 }
 
